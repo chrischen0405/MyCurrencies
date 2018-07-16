@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Window;
 import android.widget.Toast;
 
@@ -13,13 +14,15 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.Iterator;
 
+
 public class SplashActivity extends Activity {
+
     //url to currency codes used in this application
-    public static final String URL_CODES =
-            "http://openexchangerates.org/api/currencies.json";
-    public static final String KEY_ARRAYLIST = key_arraylist;
+    public static final String URL_CODES = "http://openexchangerates.org/api/currencies.json";
+    public static final String KEY_ARRAYLIST = "key_arraylist";
     //ArrayList of currencies that will be fetched and passed into MainActivity
     private ArrayList<String> mCurrencies;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,11 +31,11 @@ public class SplashActivity extends Activity {
         setContentView(R.layout.activity_splash);
         new FetchCodesTask().execute(URL_CODES);
     }
-
     private class FetchCodesTask extends AsyncTask<String, Void, JSONObject> {
         @Override
         protected void onPostExecute(JSONObject jsonObject) {
             try {
+                Log.i("aaaaaaaaaaaaaa111  ",jsonObject.toString());
                 if (jsonObject == null) {
                     throw new JSONException("no data available.");
                 }
@@ -44,23 +47,27 @@ public class SplashActivity extends Activity {
                     mCurrencies.add(key + " | " + jsonObject.getString(key));
                 }
                 Intent mainIntent =new Intent(SplashActivity.this,MainActivity.class);
-                mainIntent.putExtra( KEY_ARRAYLIST,mCurrencies);
+                mainIntent.putExtra(KEY_ARRAYLIST,mCurrencies);
                 startActivity(mainIntent);
+
                 finish();
             } catch (JSONException e) {
-                Toast. makeText(
-                        SplashActivity. this,
+                Toast.makeText(
+                        SplashActivity.this,
                         "There's been a JSON exception: " + e.getMessage(),
-                        Toast. LENGTH_LONG
+                        Toast.LENGTH_LONG
                 ).show();
                 e.printStackTrace();
                 finish();
             }
+
         }
 
         @Override
-        protected JSONObject doInBackground(String... strings) {
-            return new JSONParser().getJSONFromUrl(strings[0]);
+        protected JSONObject doInBackground(String... params) {
+            return new JSONParser().getJSONFromUrl(params[0]);
         }
     }
+
+
 }
