@@ -6,17 +6,19 @@
     <item
         android:id="@+id/mnu_codes"
         android:orderInCategory="100"
-        android:title="search active codes"
-        app:showAsAction="never" />
+        android:title="显示可转换币种" />
     <item
         android:id="@+id/mnu_invert"
         android:orderInCategory="200"
-        android:title="invert codes"
-        app:showAsAction="never" />
+        android:title="交换币种" />
+
+    <item
+        android:id="@+id/mnu_record"
+        android:orderInCategory="300"
+        android:title=" 查看记录" />
     <item
         android:id="@+id/mnu_exit"
-        android:orderInCategory="300"
-        android:title="exit"
-        app:showAsAction="never" />
+        android:orderInCategory="400"
+        android:title="exit" />
 
 </menu>

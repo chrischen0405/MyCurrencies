@@ -11,6 +11,7 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
@@ -94,6 +95,14 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     }
 
     @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        //通过inflater对象将自己写的资源文件转换成menu对象
+        //参数1代表需要创建的菜单，参数2代表将菜单设置到对应的menu上
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        return true;
+    }
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         switch (id) {
@@ -156,6 +165,10 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
             case R.id.spn_hom:
                 PrefsMgr.setString(this, HOM,
                         extractCodeFromCurrency((String) mHomSpinner.getSelectedItem()));
+                break;
+            case R.id.mnu_record:
+                Intent intent = new Intent(this,RecordActivity.class);
+                startActivity(intent);
                 break;
             default:
                 break;
