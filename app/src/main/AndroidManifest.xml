@@ -2,7 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.zucc.cwj31501084.mycurrencies">
 
-    <uses-permission android:name="android.permission.INTERNET"></uses-permission>
+    <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <application
@@ -21,6 +21,8 @@
             </intent-filter>
         </activity>
         <activity android:name=".RecordActivity" />
+        <activity android:name=".ChartActivity" />
+        <activity android:name=".ChangeActivity"></activity>
     </application>
 
 </manifest>

@@ -11,6 +11,7 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -120,6 +121,10 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                 Intent intent = new Intent(MainActivity.this, RecordActivity.class);
                 startActivity(intent);
                 break;
+            case R.id.mnu_change:
+                Intent intent2 = new Intent(this, ChangeActivity.class);
+                startActivity(intent2);
+                break;
             case R.id.mnu_exit:
                 finish();
                 break;
@@ -175,6 +180,10 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
             case R.id.mnu_record:
                 Intent intent = new Intent(this, RecordActivity.class);
                 startActivity(intent);
+                break;
+            case R.id.mnu_change:
+                Intent intent2 = new Intent(this, ChangeActivity.class);
+                startActivity(intent2);
                 break;
             default:
                 break;

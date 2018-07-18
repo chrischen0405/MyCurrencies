@@ -17,8 +17,12 @@
         android:orderInCategory="300"
         android:title=" 查看记录" />
     <item
-        android:id="@+id/mnu_exit"
+        android:id="@+id/mnu_change"
         android:orderInCategory="400"
+        android:title="汇率变化"/>
+    <item
+        android:id="@+id/mnu_exit"
+        android:orderInCategory="500"
         android:title="退出" />
 
 </menu>
