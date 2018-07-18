@@ -28,8 +28,10 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.io.InputStream;
 import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 import java.util.Properties;
 
 public class MainActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
@@ -114,6 +116,10 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                 //TODO define behavior here
                 launchBrowser(SplashActivity.URL_CODES);
                 break;
+            case R.id.mnu_record:
+                Intent intent = new Intent(MainActivity.this, RecordActivity.class);
+                startActivity(intent);
+                break;
             case R.id.mnu_exit:
                 finish();
                 break;
@@ -167,7 +173,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                         extractCodeFromCurrency((String) mHomSpinner.getSelectedItem()));
                 break;
             case R.id.mnu_record:
-                Intent intent = new Intent(this,RecordActivity.class);
+                Intent intent = new Intent(this, RecordActivity.class);
                 startActivity(intent);
                 break;
             default:
@@ -259,6 +265,17 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                 e.printStackTrace();
             }
             mConvertedTextView.setText(DECIMAL_FORMAT.format(dCalculated) + " " + strHomCode);
+
+            BeanRecord data = new BeanRecord();
+            data.setForCode(strForCode);
+            data.setForAmount(strAmount);
+            data.setHomCode(strHomCode);
+            data.setHomAmount(new DecimalFormat("0.00").format(dCalculated));
+            SimpleDateFormat formatter = new SimpleDateFormat("yy/MM/dd HH:mm");
+            Date curDate = new Date(System.currentTimeMillis());
+            data.setTime(formatter.format(curDate));
+            MyDatabaseManager dbManager = new MyDatabaseManager(getBaseContext());
+            dbManager.addData(data);
 
             progressDialog.dismiss();
 

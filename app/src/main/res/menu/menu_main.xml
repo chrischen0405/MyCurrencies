@@ -19,6 +19,6 @@
     <item
         android:id="@+id/mnu_exit"
         android:orderInCategory="400"
-        android:title="exit" />
+        android:title="退出" />
 
 </menu>
