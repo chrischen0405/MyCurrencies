@@ -122,6 +122,12 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                 startActivity(intent);
                 break;
             case R.id.mnu_change:
+                BeanRate data = new BeanRate();
+                data.setId(1);
+                data.setDate("2");
+                data.setRate(3);
+                RateDatabaseManager dbManager = new RateDatabaseManager(getBaseContext());
+                dbManager.addData(data);
                 Intent intent2 = new Intent(this, ChangeActivity.class);
                 startActivity(intent2);
                 break;
