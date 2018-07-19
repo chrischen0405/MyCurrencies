@@ -95,6 +95,9 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
             }
         });
         mKey = getKey("open_key");
+
+        Intent intent=new Intent(MainActivity.this,MyService.class);
+        startService(intent);
     }
 
     @Override
