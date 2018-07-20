@@ -27,11 +27,16 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
                 "homAmount TEXT," +
                 "time TEXT)");
 
+        db.execSQL("CREATE TABLE IF NOT EXISTS allrate" +
+                "(ratetime BIGINT PRIMARY KEY AUTOINCREMENT, " +
+                "allrate TEXT)");
+
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         // db.execSQL("ALTER TABLE note ADD COLUMN other STRING");
         db.execSQL("drop table if exists record");
+        db.execSQL("drop table if exists allrate");
     }
 }

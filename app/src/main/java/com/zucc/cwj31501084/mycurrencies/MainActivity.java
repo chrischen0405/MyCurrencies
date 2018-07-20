@@ -36,11 +36,13 @@ import java.util.Date;
 import java.util.Properties;
 
 public class MainActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
+    public static final String KEY_LIST = "key_list";
     private Button mCalcButton;
     private TextView mConvertedTextView;
     private EditText mAmountEditText;
     private Spinner mForSpinner, mHomSpinner;
     private String[] mCurrencies;
+    private ArrayList<String> arrayList;
     public static final String FOR = "FOR_CURRENCY";
     public static final String HOM = "HOM_CURRENCY";
 
@@ -48,6 +50,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     private String mKey;
     //used to fetch the 'rates' json object from openexchangerates.org
     public static final String RATES = "rates";
+    public static final String TIMESTAMP = "timestamp";
     public static final String URL_BASE =
             "http://openexchangerates.org/api/latest.json?app_id=";
     //used to format data from openexchangerates.org
@@ -65,7 +68,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         mConvertedTextView = (TextView) findViewById(R.id.txt_converted);
 
         //unpack ArrayList from the bundle and convert to array
-        ArrayList<String> arrayList = ((ArrayList<String>)
+        arrayList = ((ArrayList<String>)
                 getIntent().getSerializableExtra(SplashActivity.KEY_ARRAYLIST));
         Collections.sort(arrayList);
         mCurrencies = arrayList.toArray(new String[arrayList.size()]);
@@ -96,8 +99,10 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         });
         mKey = getKey("open_key");
 
-        Intent intent=new Intent(MainActivity.this,MyService.class);
+        Intent intent = new Intent(MainActivity.this, MyService.class);
         startService(intent);
+
+        new AllRateTask().execute(URL_BASE + mKey);
     }
 
     @Override
@@ -131,7 +136,8 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                 data.setRate(3);
                 RateDatabaseManager dbManager = new RateDatabaseManager(getBaseContext());
                 dbManager.addData(data);
-                Intent intent2 = new Intent(this, ChangeActivity.class);
+                Intent intent2 = new Intent(MainActivity.this, ChangeActivity.class);
+                intent2.putExtra(KEY_LIST, arrayList);
                 startActivity(intent2);
                 break;
             case R.id.mnu_exit:
@@ -265,6 +271,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                     throw new JSONException("no data available.");
                 }
                 JSONObject jsonRates = jsonObject.getJSONObject(RATES);
+                Log.i("jsonrates", jsonRates.toString());
                 if (strHomCode.equalsIgnoreCase("USD")) {
                     dCalculated = Double.parseDouble(strAmount) / jsonRates.getDouble(strForCode);
                 } else if (strForCode.equalsIgnoreCase("USD")) {
@@ -301,6 +308,47 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 //            if (mCurrencyTaskCallback != null) {
             //               mCurrencyTaskCallback.executionDone();
             //          }
+        }
+
+        @Override
+        protected JSONObject doInBackground(String... strings) {
+            return new JSONParser().getJSONFromUrl(strings[0]);
+        }
+    }
+
+    private class AllRateTask extends AsyncTask<String, Void, JSONObject> {
+        private long ratetime;
+        private String allrate;
+
+        @Override
+        protected void onPostExecute(JSONObject jsonObject) {
+            try {
+
+                if (jsonObject == null) {
+                    throw new JSONException("no data available.");
+                }
+                JSONObject jsonRates = jsonObject.getJSONObject(RATES);
+                allrate = jsonRates.toString();
+                Log.i("jsonrates", jsonRates.toString());
+                JSONObject jsonTime = jsonObject.getJSONObject(TIMESTAMP);
+                ratetime = Long.parseLong(jsonTime.toString());
+                Log.i("jsontime", jsonTime.toString());
+            } catch (JSONException e) {
+                Toast.makeText(
+                        MainActivity.this,
+                        "There's been a JSON exception: " + e.getMessage(),
+                        Toast.LENGTH_LONG
+                ).show();
+                Log.i("exception: ", e.getMessage());
+                e.printStackTrace();
+            }
+
+            BeanAllRate data = new BeanAllRate();
+            data.setAllrate(allrate);
+            data.setRatetime(ratetime);
+            MyDatabaseManager dbManager = new MyDatabaseManager(getBaseContext());
+            dbManager.addData(data);
+
         }
 
         @Override

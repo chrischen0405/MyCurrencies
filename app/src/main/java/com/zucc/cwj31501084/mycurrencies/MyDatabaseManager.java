@@ -23,12 +23,12 @@ public class MyDatabaseManager {
     }
 
     public void addData(BeanRecord data) {
-
         addContent(data);
-
-
     }
 
+    public void addData(BeanAllRate data) {
+        addContent(data);
+    }
 
     private void addContent(BeanRecord data) {
         ContentValues values = new ContentValues();
@@ -38,6 +38,13 @@ public class MyDatabaseManager {
         values.put("forAmount", data.getForAmount());
         values.put("time", data.getTime());
         db.insert("record", null, values);
+    }
+
+    private void addContent(BeanAllRate data) {
+        ContentValues values = new ContentValues();
+        values.put("ratetime", data.getRatetime());
+        values.put("allrate", data.getAllrate());
+        db.insert("allrate", null, values);
     }
 
     public ArrayList<BeanRecord> queryAllContent() {
@@ -54,6 +61,22 @@ public class MyDatabaseManager {
             String homAmount = c.getString(c.getColumnIndex("homAmount"));
             String time = c.getString(c.getColumnIndex("time"));
             data = new BeanRecord(forCode, forAmount, homCode, homAmount, time);
+            datas.add(data);
+
+        }
+        c.close();
+        return datas;
+    }
+
+    public ArrayList<BeanAllRate> queryAllRate() {
+        ArrayList<BeanAllRate> datas = new ArrayList<>();
+        Cursor c = db.query("allrate", null, null, null, null, null, null);
+        while (c.moveToNext()) {
+            BeanAllRate data = null;
+
+            long ratetime = c.getLong(c.getColumnIndex("ratetime"));
+            String allrate = c.getString(c.getColumnIndex("allrate"));
+            data = new BeanAllRate(ratetime, allrate);
             datas.add(data);
 
         }
