@@ -50,6 +50,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     public static final String HOM = "HOM_CURRENCY";
     private String json;
     private ArrayList<BeanRate> ratejson;
+    private float cnyrate;
 
     //this will contain my developers key
     private String mKey;
@@ -337,14 +338,16 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                 BeanRate data;
 
                 Iterator iterator = jsonRates.keys();
+                cnyrate = (float) jsonRates.getDouble("CNY");
                 String key = "";
                 while (iterator.hasNext()) {
                     data = new BeanRate();
                     key = (String) iterator.next();
                     data.setCountry(key);
-                    data.setCountryrate((float) jsonRates.getDouble(key));
+                    data.setCountryrate((float) jsonRates.getDouble(key) / cnyrate);
                     ratejson.add(data);
                 }
+                Log.i("CNYrate", cnyrate + "");
                 Log.i("jsonrates", jsonRates.toString());
                 ratetime = jsonObject.getLong(TIMESTAMP);
                 Log.i("jsontime", ratetime + "");
