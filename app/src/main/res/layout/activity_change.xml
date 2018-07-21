@@ -21,7 +21,7 @@
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
             android:layout_weight="0.5"
-            android:text="显示图表"
+            android:text="美元对人民币汇率折线图"
             android:textColor="@color/black" />
     </LinearLayout>
 

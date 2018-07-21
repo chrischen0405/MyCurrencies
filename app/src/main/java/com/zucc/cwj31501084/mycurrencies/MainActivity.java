@@ -362,15 +362,17 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
             }
 
             BeanAllRate data = new BeanAllRate();
+            int flag = 0;
             data.setAllrate(allrate);
             data.setRatetime(ratetime);
             MyDatabaseManager dbManager = new MyDatabaseManager(getBaseContext());
             ArrayList<BeanAllRate> all = dbManager.queryAllRate();
             for (BeanAllRate d : all) {
                 if (d.getRatetime() == ratetime)
-                    break;
+                    flag = 1;
             }
-            dbManager.addData(data);
+            if (flag == 0)
+                dbManager.addData(data);
 
         }
 
