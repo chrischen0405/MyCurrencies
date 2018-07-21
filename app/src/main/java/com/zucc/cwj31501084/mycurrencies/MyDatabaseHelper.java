@@ -9,7 +9,7 @@ import android.database.sqlite.SQLiteOpenHelper;
  */
 
 public class MyDatabaseHelper extends SQLiteOpenHelper {
-    private static final String DATABASE_NAME = "currenciesdb.db";
+    private static final String DATABASE_NAME = "currencydb.db";
     private static final int DATABASE_VERSION = 1;
 
     public MyDatabaseHelper(Context context) {
@@ -28,9 +28,9 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
                 "time TEXT)");
 
         db.execSQL("CREATE TABLE IF NOT EXISTS allrate" +
-                "(ratetime BIGINT PRIMARY KEY AUTOINCREMENT, " +
+                "(id INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                "ratetime BIGINT," +
                 "allrate TEXT)");
-
     }
 
     @Override

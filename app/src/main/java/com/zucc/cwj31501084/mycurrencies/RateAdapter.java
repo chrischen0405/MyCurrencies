@@ -29,12 +29,10 @@ public class RateAdapter extends ArrayAdapter<BeanRate> {
         } else {
             view = convertView;
         }
-        TextView id = (TextView) view.findViewById(R.id.id);
-        TextView date = (TextView) view.findViewById(R.id.date);
+        TextView country = (TextView) view.findViewById(R.id.country);
         TextView rate = (TextView) view.findViewById(R.id.rate);
-        id.setText(data.getId() + "");
-        date.setText(data.getDate());
-        rate.setText(data.getRate() + "");
+        country.setText(data.getCountry());
+        rate.setText(data.getCountryrate() + "");
         return view;
     }
 }

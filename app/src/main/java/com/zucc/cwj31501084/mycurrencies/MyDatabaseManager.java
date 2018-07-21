@@ -83,4 +83,13 @@ public class MyDatabaseManager {
         c.close();
         return datas;
     }
+
+    public Boolean queryJson(long ratetime) {
+        ArrayList<BeanAllRate> datas = new ArrayList<>();
+        Cursor c = db.rawQuery("select * from allrate where ratetime = "+ratetime,null);
+        if (c.moveToNext())
+            return true;
+        else
+            return false;
+    }
 }

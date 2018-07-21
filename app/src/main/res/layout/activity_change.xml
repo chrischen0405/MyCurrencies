@@ -32,59 +32,27 @@
         android:showDividers="middle">
 
         <TextView
-            android:id="@+id/shijian"
+            android:id="@+id/waiguohuobi"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_weight="0.2"
+            android:layout_weight="0.5"
             android:background="@color/grey_dark"
             android:gravity="center"
-            android:text="查询时间"
+            android:text="外国货币"
             android:textColor="@color/white"
             android:textStyle="bold" />
 
         <TextView
-            android:id="@+id/forCode1"
+            android:id="@+id/huilv"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_weight="0.2"
+            android:layout_weight="0.5"
             android:background="@color/grey_dark"
             android:gravity="center"
-            android:text="原币种"
+            android:text="汇率"
             android:textColor="@color/white"
             android:textStyle="bold" />
 
-        <TextView
-            android:id="@+id/forAmount1"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="0.2"
-            android:background="@color/grey_dark"
-            android:gravity="center"
-            android:text="查询数目"
-            android:textColor="@color/white"
-            android:textStyle="bold" />
-
-        <TextView
-            android:id="@+id/homCode1"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="0.2"
-            android:background="@color/grey_dark"
-            android:gravity="center"
-            android:text="目标币种"
-            android:textColor="@color/white"
-            android:textStyle="bold" />
-
-        <TextView
-            android:id="@+id/homAmount1"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="0.2"
-            android:background="@color/grey_dark"
-            android:gravity="center"
-            android:text="查询结果"
-            android:textColor="@color/white"
-            android:textStyle="bold" />
     </LinearLayout>
 
     <View

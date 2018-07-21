@@ -33,6 +33,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.Properties;
 
 public class MainActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
@@ -42,9 +43,13 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     private EditText mAmountEditText;
     private Spinner mForSpinner, mHomSpinner;
     private String[] mCurrencies;
+    private String[] mCountry;
     private ArrayList<String> arrayList;
+    private ArrayList<String> arrayList2;
     public static final String FOR = "FOR_CURRENCY";
     public static final String HOM = "HOM_CURRENCY";
+    private String json;
+    private ArrayList<BeanRate> ratejson;
 
     //this will contain my developers key
     private String mKey;
@@ -71,7 +76,11 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         arrayList = ((ArrayList<String>)
                 getIntent().getSerializableExtra(SplashActivity.KEY_ARRAYLIST));
         Collections.sort(arrayList);
+        arrayList2 = ((ArrayList<String>)
+                getIntent().getSerializableExtra(SplashActivity.KEY_COUNTRYLIST));
+        Collections.sort(arrayList2);
         mCurrencies = arrayList.toArray(new String[arrayList.size()]);
+        mCountry = arrayList2.toArray(new String[arrayList2.size()]);
 
         ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(this, R.layout.spinner_closed, mCurrencies);
         arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -130,14 +139,8 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                 startActivity(intent);
                 break;
             case R.id.mnu_change:
-                BeanRate data = new BeanRate();
-                data.setId(1);
-                data.setDate("2");
-                data.setRate(3);
-                RateDatabaseManager dbManager = new RateDatabaseManager(getBaseContext());
-                dbManager.addData(data);
                 Intent intent2 = new Intent(MainActivity.this, ChangeActivity.class);
-                intent2.putExtra(KEY_LIST, arrayList);
+                intent2.putExtra(KEY_LIST, ratejson);
                 startActivity(intent2);
                 break;
             case R.id.mnu_exit:
@@ -329,10 +332,22 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                 }
                 JSONObject jsonRates = jsonObject.getJSONObject(RATES);
                 allrate = jsonRates.toString();
+                json = jsonRates.toString();
+                ratejson = new ArrayList<BeanRate>();
+                BeanRate data;
+
+                Iterator iterator = jsonRates.keys();
+                String key = "";
+                while (iterator.hasNext()) {
+                    data = new BeanRate();
+                    key = (String) iterator.next();
+                    data.setCountry(key);
+                    data.setCountryrate((float) jsonRates.getDouble(key));
+                    ratejson.add(data);
+                }
                 Log.i("jsonrates", jsonRates.toString());
-                JSONObject jsonTime = jsonObject.getJSONObject(TIMESTAMP);
-                ratetime = Long.parseLong(jsonTime.toString());
-                Log.i("jsontime", jsonTime.toString());
+                ratetime = jsonObject.getLong(TIMESTAMP);
+                Log.i("jsontime", ratetime + "");
             } catch (JSONException e) {
                 Toast.makeText(
                         MainActivity.this,
@@ -347,6 +362,11 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
             data.setAllrate(allrate);
             data.setRatetime(ratetime);
             MyDatabaseManager dbManager = new MyDatabaseManager(getBaseContext());
+            ArrayList<BeanAllRate> all = dbManager.queryAllRate();
+            for (BeanAllRate d : all) {
+                if (d.getRatetime() == ratetime)
+                    break;
+            }
             dbManager.addData(data);
 
         }
