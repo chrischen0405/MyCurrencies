@@ -86,10 +86,14 @@ public class MyDatabaseManager {
 
     public Boolean queryJson(long ratetime) {
         ArrayList<BeanAllRate> datas = new ArrayList<>();
-        Cursor c = db.rawQuery("select * from allrate where ratetime = "+ratetime,null);
+        Cursor c = db.rawQuery("select * from allrate where ratetime = " + ratetime, null);
         if (c.moveToNext())
             return true;
         else
             return false;
+    }
+
+    public void deleteRecord(String time) {
+        db.execSQL("DELETE FROM record WHERE time = '" + time + "'");
     }
 }

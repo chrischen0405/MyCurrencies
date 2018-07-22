@@ -16,6 +16,7 @@ import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -24,6 +25,7 @@ public class ChartActivity extends Activity {
     private LineChart lineChart;
     MyDatabaseManager myDatabaseManager;
     private ArrayList<BeanAllRate> allRates;
+    DecimalFormat fnum  =   new  DecimalFormat("##0.00");
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -95,8 +97,8 @@ public class ChartActivity extends Activity {
         leftAxis.setDrawGridLines(false);
         leftAxis.setTextSize(16f);
         leftAxis.setAxisLineWidth(3);
-        leftAxis.setAxisMinValue(0);
-        leftAxis.setAxisMaxValue(10);
+        leftAxis.setAxisMinValue(6);
+        leftAxis.setAxisMaxValue(7);
         leftAxis.setAxisLineColor(getResources().getColor(R.color.black));
         lineChart.getAxisRight().setEnabled(false); // 设置不显示右y轴  默认会显示右y轴
 

@@ -1,14 +1,21 @@
 package com.zucc.cwj31501084.mycurrencies;
 
 import android.app.Activity;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.v7.app.AlertDialog;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,7 +24,7 @@ import java.util.List;
  * Created by chenwenjie on 2018/7/17.
  */
 
-public class RecordActivity extends Activity {
+public class RecordActivity extends Activity implements AdapterView.OnItemClickListener {
     private MyDatabaseManager dbManager;
     private ListView listview;
     private List<BeanRecord> datas = new ArrayList<>();
@@ -46,6 +53,7 @@ public class RecordActivity extends Activity {
         listview = (ListView) findViewById(R.id.listview);
         listview.setAdapter(adapter);
         listview.setTextFilterEnabled(true);
+        listview.setOnItemClickListener(this);
 
     }
 
@@ -149,5 +157,45 @@ public class RecordActivity extends Activity {
                 homAmount.add(d.getHomAmount());
             }
         }
+    }
+
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        String text = (String) ((TextView) view.findViewById(R.id.time)).getText();
+        //大多数情况下，position和id相同，并且都从0开始
+        showDialog(text);
+        String showText = "点击第" + position + "项，文本内容为：" + text + "，ID为：" + id;
+
+        Toast.makeText(this, showText, Toast.LENGTH_LONG).show();
+    }
+
+    private void showDialog(final String time) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("删除");
+        builder.setMessage("是否删除" + time + "的记录");
+        builder.setPositiveButton("确定",
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        MyDatabaseManager myDatabaseManager = new MyDatabaseManager(getApplicationContext());
+                        myDatabaseManager.deleteRecord(time);
+                        refresh();
+
+                    }
+                });
+        builder.setNegativeButton("取消",
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int i) {
+                        dialog.dismiss();
+                    }
+                });
+        AlertDialog dialog = builder.create();
+        dialog.show();
+
+    }
+
+    private void refresh() {
+        onCreate(null);
     }
 }
